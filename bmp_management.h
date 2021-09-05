@@ -1,12 +1,12 @@
 typedef struct header{
-	unsigned short Signature = 'BM'; //'BM'
+	unsigned short Signature; //'BM'
 	unsigned long FileSize; //File size in bytes
-	unsigned long reserved = 0; //unused (=0)
+	unsigned long reserved; //unused (=0)
 	unsigned long DataOffset; //Offset from beginning of file to the beginning of the bitmap data
 } Header;
 
 typedef struct infoheader{
-	unsigned long Size = 40; //Size of InfoHeader =40 
+	unsigned long Size; //Size of InfoHeader =40
         unsigned long Width; //Horizontal width of bitmap in pixels
         unsigned long Height; //Vertical height of bitmap in pixels
         unsigned short Planes; //Number of Planes (=1)
@@ -33,7 +33,7 @@ typedef struct colortableelement{ //Element of palette - unusued if InfoHeader.B
 	unsigned char Red;
 	unsigned char Green;
 	unsigned char Blue;
-	unsigned char reserved = 0; //unused
+	unsigned char reserved; //unused
 } ColorTableElement;
 
 typedef struct pixeldataelement{
@@ -55,7 +55,6 @@ typedef struct bitmap{
 	PixelDataElement * pixelData;
 } BitMap;
 
-Header newHeader(unsigned short sig, unsigned long filesize, unsigned long dataoffset){
-	Header newHeader = malloc 
+unsigned long BMP_size(int nbOfPixels){ //Returns size of BMP file
+    return 54+3*nbOfPixels;
 }
-
