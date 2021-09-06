@@ -9,17 +9,17 @@ int main(){
     printf("Taille du fichier = %d\n",theHeader.FileSize);
     InfoHeader theInfoHeader = {40,3,3,1,24,0,0,1000,1000,16777216,0};
 
-    PixelDataElement p1 = {0,0,0};
-    PixelDataElement p2 = {0,0,254};
-    PixelDataElement p3 = {0,254,0};
+    PixelDataElement p1 = {0,1,2};
+    PixelDataElement p2 = {3,4,5};
+    PixelDataElement p3 = {6,7,8};
 
-    PixelDataElement p4 = {0,254,254};
-    PixelDataElement p5 = {254,0,0};
-    PixelDataElement p6 = {254,0,254};
+    PixelDataElement p4 = {9,10,11};
+    PixelDataElement p5 = {13,14,15};
+    PixelDataElement p6 = {16,17,18};
 
-    PixelDataElement p7 = {254,254,0};
-    PixelDataElement p8 = {254,254,254};
-    PixelDataElement p9 = {0,0,0};
+    PixelDataElement p7 = {19,20,21};
+    PixelDataElement p8 = {22,23,24};
+    PixelDataElement p9 = {25,26,27};
 
     PixelDataElement pTab[9] = {p1,p2,p3,p4,p5,p6,p7,p8,p9};
 
