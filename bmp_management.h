@@ -1,3 +1,6 @@
+#ifndef BMP_MANAGEMENT_H
+#define BMP_MANAGEMENT_H
+
 #include <stdint.h>
 typedef struct __attribute__((__packed__)) header{ //__attribute__((__packed__)) will make sure GCC packs the structure
     unsigned short Signature; //'BM'
@@ -57,4 +60,6 @@ typedef struct __attribute__((__packed__)) bitmap{
 } BitMap;
 
 int BMP_256_convertToMatrix(char * path);
-int BMP_256_printMatrix(pixelDataElement * matrix[], int resX, int resY );
+void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char * FileName );
+
+#endif

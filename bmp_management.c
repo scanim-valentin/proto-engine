@@ -1,7 +1,7 @@
 #include "bmp_management.h"
 #include <stdio.h>
 
-int BMP_256_printMatrix(pixelDataElement * matrix[], int resX, int resY, char * fileName ){
+void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char * fileName ){
     
     //Creating the header
     int zero_padding = resX % 4; //Each scan line is zero padded to the nearest 4-byte boundary
@@ -37,5 +37,4 @@ int BMP_256_printMatrix(pixelDataElement * matrix[], int resX, int resY, char * 
         }
     }
     fclose(fileBMP);
-    return 0 ; 
 }
