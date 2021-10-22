@@ -38,9 +38,9 @@ typedef struct __attribute__((__packed__)) colortableelement{ //Element of palet
 } ColorTableElement;
 
 typedef struct __attribute__((__packed__)) pixeldataelement{
-    unsigned char Red;
-    unsigned char Green;
     unsigned char Blue;
+    unsigned char Green;
+    unsigned char Red;
 } PixelDataElement;
 
 typedef struct __attribute__((__packed__)) bitmap_palette{
@@ -55,3 +55,6 @@ typedef struct __attribute__((__packed__)) bitmap{
     InfoHeader infoHeader;
     PixelDataElement * pixelData;
 } BitMap;
+
+int BMP_256_convertToMatrix(char * path);
+int BMP_256_printMatrix(pixelDataElement * matrix[], int resX, int resY );

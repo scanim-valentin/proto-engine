@@ -6,7 +6,7 @@ int main(){
 
     Header theHeader = {0x4D42,(unsigned long)(54+3*NB_PIXELS),0,45};
 
-    printf("Taille du fichier = %d\n",theHeader.FileSize);
+    printf("Taille du fichier = %d\n",90);
     InfoHeader theInfoHeader = {40,//size of infoheader
         3,//width
         3,//height
@@ -19,17 +19,17 @@ int main(){
         16777216,//Number of colors
         0}; //Important colors (0 = all)
 
-    PixelDataElement p1 = {0,1,2};
+    PixelDataElement p1 = {0,0,255};
     PixelDataElement p2 = {3,4,5};
     PixelDataElement p3 = {6,7,8};
 
     PixelDataElement p4 = {9,10,11};
-    PixelDataElement p5 = {12,13,14};
+    PixelDataElement p5 = {0,255,0};
     PixelDataElement p6 = {15,16,17};
 
     PixelDataElement p7 = {18,19,20};
     PixelDataElement p8 = {21,22,23};
-    PixelDataElement p9 = {24,25,26};
+    PixelDataElement p9 = {255,0,0};
     
     PixelDataElement zero_pad = {0,0,0};
     
