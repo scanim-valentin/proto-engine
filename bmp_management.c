@@ -1,12 +1,12 @@
-#include "bmp_management.h"
 #include <stdio.h>
+#include "bmp_management.h"
 
 void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char * fileName ){
     
     //Creating the header
     int zero_padding = resX % 4; //Each scan line is zero padded to the nearest 4-byte boundary
-    int offset = sizeof(Header);
-    int sizeOfMatrix = resX*resY; 
+    int offset = sizeof(Header)+sizeof(InfoHeader);
+    int sizeOfMatrix = resX*resY*3;
     Header H = {0x4D42,sizeOfMatrix+zero_padding+offset,0,offset};
     InfoHeader IH = {sizeof(InfoHeader),//size of infoheader
         resX,//width
@@ -29,12 +29,16 @@ void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char *
     char zero = 0 ; 
     for(int i = 0 ; i < resY ; i++ ){
         for(int j = 0 ; j < resX ; j++ ){
+            printf(" R%dG%dB%d ", matrix[i][j].Red, matrix[i][j].Green, matrix[i][j].Blue);
             fwrite(&(matrix[i][j]),sizeof(char),1,fileBMP);
         }
         
-        for( int k = 0 ; k < zero_padding ; k++ ){            
+        for( int k = 0 ; k < zero_padding ; k++ ){
+            printf(" 0 ");
             fwrite(&(zero),sizeof(char),1,fileBMP);
         }
+        printf(" \n ");
+
     }
     fclose(fileBMP);
 }
