@@ -1,5 +1,28 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "bmp_management.h"
+
+PixelDataElement BMP_256_createPixel(unsigned char Red, unsigned char Green, unsigned char Blue){
+    PixelDataElement R = {Blue,Green,Red};
+    return R;
+}
+
+//Test function : generate a resY x resY pixel matrix of progressively bright pixel (bitmap data should follow n=n+1 pattern)
+PixelDataElement * * BMP_256_testProgressive(int resX, int resY){
+
+    PixelDataElement * * matrix = malloc(sizeof(PixelDataElement)*resY);
+    for(int i = 0 ; i < resY ; i++ ){
+        PixelDataElement * line = malloc(sizeof(PixelDataElement)*resX);;
+        for(int j = 0 ; j < resX ; j++ ){
+            unsigned char n = (i+j)*3;
+            line[j] = BMP_256_createPixel(n,n+1,n+2) ;
+            printf(" R%dG%dB%d ", line[j].Red, line[j].Green, line[j].Blue);
+        }
+        matrix[i] = line;
+        printf("\n");
+    }
+    return matrix;
+}
 
 void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char * fileName ){
     
@@ -30,7 +53,7 @@ void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char *
     for(int i = 0 ; i < resY ; i++ ){
         for(int j = 0 ; j < resX ; j++ ){
             printf(" R%dG%dB%d ", matrix[i][j].Red, matrix[i][j].Green, matrix[i][j].Blue);
-            fwrite(&(matrix[i][j]),sizeof(char),1,fileBMP);
+            fwrite(&(matrix[i][j]),sizeof(char)*3,1,fileBMP);
         }
         
         for( int k = 0 ; k < zero_padding ; k++ ){

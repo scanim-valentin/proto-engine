@@ -7,7 +7,7 @@ int main(){
     PixelDataElement p3 = {6,7,8};
     PixelDataElement l1[3] = {p1,p2,p3};
     PixelDataElement p4 = {9,10,11};
-    PixelDataElement p5 = {0,255,0};
+    PixelDataElement p5 = {12,13,14};
     PixelDataElement p6 = {15,16,17};
     PixelDataElement l2[3] = {p4,p5,p6};
     PixelDataElement p7 = {18,19,20};
