@@ -59,3 +59,6 @@ typedef struct __attribute__((__packed__)) bitmap{
 
 int BMP_256_convertToMatrix(char * path);
 void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char * FileName );
+
+//For testing
+PixelDataElement * * BMP_256_testProgressive(int resX, int resY);

@@ -9,12 +9,12 @@ PixelDataElement BMP_256_createPixel(unsigned char Red, unsigned char Green, uns
 
 //Test function : generate a resY x resY pixel matrix of progressively bright pixel (bitmap data should follow n=n+1 pattern)
 PixelDataElement * * BMP_256_testProgressive(int resX, int resY){
-
+    printf(" Progressive Matrix Creation \n ");
     PixelDataElement * * matrix = malloc(sizeof(PixelDataElement)*resY);
     for(int i = 0 ; i < resY ; i++ ){
         PixelDataElement * line = malloc(sizeof(PixelDataElement)*resX);;
         for(int j = 0 ; j < resX ; j++ ){
-            unsigned char n = (i+j)*3;
+            unsigned char n = i*resX+j*3;
             line[j] = BMP_256_createPixel(n,n+1,n+2) ;
             printf(" R%dG%dB%d ", line[j].Red, line[j].Green, line[j].Blue);
         }
@@ -25,7 +25,7 @@ PixelDataElement * * BMP_256_testProgressive(int resX, int resY){
 }
 
 void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char * fileName ){
-    
+    printf(" Printing Matrix to file \n ");
     //Creating the header
     int zero_padding = resX % 4; //Each scan line is zero padded to the nearest 4-byte boundary
     int offset = sizeof(Header)+sizeof(InfoHeader);
