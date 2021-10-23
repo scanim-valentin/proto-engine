@@ -62,3 +62,7 @@ void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char *
 
 //For testing
 PixelDataElement * * BMP_256_testProgressive(int resX, int resY);
+PixelDataElement * * BMP_256_testMystery(int resX, int resY);
+PixelDataElement * * BMP_256_testMystery2(int resX, int resY);
+
+PixelDataElement * * BMP_256_testSinus(int resX, int resY);
