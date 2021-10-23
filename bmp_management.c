@@ -65,7 +65,8 @@ PixelDataElement * * BMP_256_testSinus(int resX, int resY){
             double phi = 2.0*3.14*(double)j/(((double)resX/4.0)+1.0) ;
             double testValue = ( (resY/2)+sin(phi)*(resY/4) ) ;
             double testValue2 = ( (resY/2)+cos(phi)*(resY/4) ) ;
-            if( ( i == (int)testValue ) || ( i == (int)testValue2 ) )
+            printf("%d ",(int)(200*exp((1.0)/(double)j)) );
+            if( ( i == (int)testValue ) || ( i == (int)testValue2 ) || ( i == (int)(200*exp((1.0)/((double)j/20.)) ) ) | (i == (int)(50*log(j))) )
                 line[j] = BMP_256_createPixel(255,255,255) ;
             else
                 line[j] = BMP_256_createPixel(0,0,0) ;
