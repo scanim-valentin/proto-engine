@@ -66,3 +66,5 @@ PixelDataElement * * BMP_256_testMystery(int resX, int resY);
 PixelDataElement * * BMP_256_testMystery2(int resX, int resY);
 
 PixelDataElement * * BMP_256_testSinus(int resX, int resY);
+PixelDataElement * * BMP_256_allBlack(int resX, int resY);
+int BMP_256_testMatrixAllBlack(PixelDataElement * * M, int resX, int resY) ;
