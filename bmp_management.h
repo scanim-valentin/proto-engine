@@ -1,4 +1,8 @@
+#ifndef BMP_MANAGEMENT
+#define BMP_MANAGEMENT
+
 #include <stdint.h>
+#include "pixel_matrices.h"
 
 typedef struct __attribute__((__packed__)) header{ //__attribute__((__packed__)) will make sure GCC packs the structure
     unsigned short Signature; //'BM'
@@ -38,12 +42,6 @@ typedef struct __attribute__((__packed__)) colortableelement{ //Element of palet
     unsigned char reserved; //unused
 } ColorTableElement;
 
-typedef struct __attribute__((__packed__)) pixeldataelement{
-    unsigned char Blue;
-    unsigned char Green;
-    unsigned char Red;
-} PixelDataElement;
-
 typedef struct __attribute__((__packed__)) bitmap_palette{
     Header header;
     InfoHeader infoHeader;
@@ -59,12 +57,6 @@ typedef struct __attribute__((__packed__)) bitmap{
 
 int BMP_256_convertToMatrix(char * path);
 void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char * FileName );
+PixelDataElement * BMP_256_createPixel(unsigned char Red, unsigned char Green, unsigned char Blue);
 
-//For testing
-PixelDataElement * * BMP_256_testProgressive(int resX, int resY);
-PixelDataElement * * BMP_256_testMystery(int resX, int resY);
-PixelDataElement * * BMP_256_testMystery2(int resX, int resY);
-
-PixelDataElement * * BMP_256_testSinus(int resX, int resY);
-PixelDataElement * * BMP_256_allBlack(int resX, int resY);
-int BMP_256_testMatrixAllBlack(PixelDataElement * * M, int resX, int resY) ;
+#endif
