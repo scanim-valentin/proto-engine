@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 PixelDataElement map_Progressive(PixelParameters * param){
     unsigned char n = (param->Coordinates->i)*(param->Dimensions->x)+(param->Coordinates->j)*3;
@@ -49,9 +50,12 @@ int main(){
     MatrixData M;
 
     M = Pixel256Matrix(map_MathAreFun,2000,1000);
-
-    BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,"test.bmp");
-    M = Pixel256MatrixBlur(M);
-    BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,"test-mirror.bmp");
+    char str[80];
+    BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,"it0.bmp");
+    for(int i = 1 ; i < 10 ; i++){
+        M = Pixel256MatrixBlur(M);
+        sprintf(str,"it%d.bmp",i);
+        BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,str);
+    }
     return 0;
 }

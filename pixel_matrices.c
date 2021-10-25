@@ -33,15 +33,7 @@ MatrixData Pixel256Matrix(PixelDataElement map(PixelParameters *), int resX, int
 
 }
 
-PixelDataElement RGBSum(PixelDataElement A, PixelDataElement B){
-    PixelDataElement R = {A.Blue+B.Blue , A.Green+B.Green, A.Red+B.Red};
-    return R;
-}
 
-PixelDataElement RGBDivideByScalar(PixelDataElement A, char x){
-    PixelDataElement R = {A.Blue/x , A.Green/x, A.Red/x};
-    return R;
-}
 //Defining some basic operations on RGB matrices
 
 MatrixData Pixel256MatrixTranspose(MatrixData data){
@@ -90,27 +82,115 @@ MatrixData Pixel256MatrixHorizontalMirror(MatrixData data){
 /*
 *à revoir
 */
+
+//Some operations on RGB vectors
+
+//A structure dedicated to the sole purpose of allowing more room to do operations on RGB vectors
+typedef struct double_rgb{
+    double Blue;
+    double Green;
+    double Red;
+} DoublePixel;
+
+DoublePixel RGBCharToDoublePixel(PixelDataElement A){
+    DoublePixel R = {(double)(A.Blue) , (double)(A.Green), (double)(A.Red)};
+    return R;
+}
+
+PixelDataElement RGBDoubleToCharPixel(DoublePixel A){
+    PixelDataElement R = {(char)(A.Blue) , (char)(A.Green), (char)(A.Red)};
+    return R;
+}
+
+
+DoublePixel RGBDoubleSum(DoublePixel A, DoublePixel B){
+    DoublePixel R = {(double)(A.Blue)+(double)(B.Blue) , (double)(A.Green)+(double)(B.Green), (double)(A.Red)+(double)(B.Red)};
+    return R;
+}
+
+DoublePixel RGBDivideByScalar(DoublePixel A, double x){
+    DoublePixel R = {A.Blue/x , A.Green/x, A.Red/x};
+    return R;
+}
+
+// ! Make sure size is big enough to allow proper casting to char
+PixelDataElement RGBAverageValue(PixelDataElement * * PixelTab, int size){
+    DoublePixel S = {0,0,0};
+    for(int i = 0 ; i < size ; i++){
+        S = RGBDoubleSum( S , RGBCharToDoublePixel( *PixelTab[i] ) );
+    }
+    S = RGBDivideByScalar(S, size);
+    PixelDataElement R = RGBDoubleToCharPixel(S);
+    return R;
+}
+
 MatrixData Pixel256MatrixBlur(MatrixData data){
     PixelDataElement map(PixelParameters * param, MatrixData data){
         int i = param->Coordinates->i;
         int j = param->Coordinates->j;
-        PixelDataElement R = {0,0,0};
+        int dimX = data.Dimensions.x;
+        int dimY = data.Dimensions.y;
+        PixelDataElement * * M = data.Matrix ;
 
-        if(j == data.Dimensions.x-1)
-            R = RGBSum(R,data.Matrix[i][j-1]);
-        else if(j == 0)
-            R = RGBSum(R,data.Matrix[i][j+1]);
-        else
-            R = RGBSum(RGBSum(R,data.Matrix[i][j-1]),data.Matrix[i][j+1]);
+        char left_side = ( j == 0 ) && ( i != 0 ) && ( i != ( dimY - 1 ) ) ;
+        char right_side = ( j == ( dimX - 1 ) ) && ( i != 0 ) && ( i != ( dimY - 1 ) ) ;
+        char upper_side = ( i == ( dimY - 1 ) ) && ( j != 0 ) && ( j != ( dimX - 1 ) ) ;
+        char bottom_side = ( i == 0 ) && ( j != 0 ) && ( j != ( dimX - 1 ) ) ;
+        char bottom_left_corner = ( i == 0 ) && ( j == 0 );
+        char bottom_right_corner = ( i == 0 ) && ( j == ( dimX - 1 ) );
+        char upper_right_corner = ( i == ( dimY - 1 ) ) && ( j == ( dimX - 1 ) );
+        char upper_left_corner = ( i == ( dimY - 1 ) ) && ( j == 0 );
 
-        if(i == data.Dimensions.y-1)
-            R = RGBSum(R,data.Matrix[i-1][j]);
-        else if(i == 0)
-            R = RGBSum(R,data.Matrix[i+1][j]);
-        else
-            R = RGBSum(RGBSum(R,data.Matrix[i-1][j]),data.Matrix[i+1][j]);
+        double nb_neighbors;
+        if( left_side ){
+            nb_neighbors = 6 ;
+            PixelDataElement * neighbors[] = {&(M[i][j]), &(M[i+1][j]) , &(M[i+1][j+1]), &(M[i][j+1]), &(M[i-1][j+1]), &(M[i-1][j])};
+            return RGBAverageValue(neighbors,nb_neighbors);
 
-        return RGBDivideByScalar(R,4);
+        } else if( right_side ){
+            nb_neighbors = 6 ;
+            PixelDataElement * neighbors[] = {&(M[i][j]), &(M[i+1][j]) , &(M[i+1][j-1]), &(M[i][j-1]), &(M[i-1][j-1]), &(M[i-1][j])};
+            return RGBAverageValue(neighbors,nb_neighbors);
+
+        } else if( upper_side ){
+            nb_neighbors = 6 ;
+            PixelDataElement * neighbors[] = {&(M[i][j]), &(M[i][j-1]) , &(M[i-1][j-1]), &(M[i-1][j]), &(M[i-1][j+1]), &(M[i][j+1])};
+            return RGBAverageValue(neighbors,nb_neighbors);
+
+        } else if( bottom_side ){
+            nb_neighbors = 6 ;
+            PixelDataElement * neighbors[] = {&(M[i][j]), &(M[i][j-1]) , &(M[i+1][j-1]), &(M[i+1][j]), &(M[i+1][j+1]), &(M[i][j+1])};
+            return RGBAverageValue(neighbors,nb_neighbors);
+
+        } else if( bottom_left_corner ){
+            nb_neighbors = 4 ;
+            PixelDataElement * neighbors[] = {&(M[i][j]), &(M[i+1][j]) , &(M[i+1][j+1]), &(M[i][j+1])};
+            return RGBAverageValue(neighbors,nb_neighbors);
+
+        } else if( bottom_right_corner ){
+            nb_neighbors = 4 ;
+            PixelDataElement * neighbors[] = {&(M[i][j]), &(M[i+1][j]) , &(M[i+1][j-1]), &(M[i][j-1])};
+            return RGBAverageValue(neighbors,nb_neighbors);
+
+        } else if( upper_right_corner ){
+            nb_neighbors = 4 ;
+            PixelDataElement * neighbors[] = {&(M[i][j]), &(M[i][j-1]) , &(M[i-1][j-1]), &(M[i-1][j])};
+            return RGBAverageValue(neighbors,nb_neighbors);
+
+        } else if( upper_left_corner ){
+            nb_neighbors = 4 ;
+            PixelDataElement * neighbors[] = {&(M[i][j]), &(M[i-1][j]), &(M[i-1][j+1]), &(M[i][j+1])};
+            return RGBAverageValue(neighbors,nb_neighbors);
+
+        } else{
+            nb_neighbors = 9 ;
+            PixelDataElement * neighbors[] = {&(M[i][j]), &(M[i+1][j]) , &(M[i+1][j+1]), &(M[i][j+1]), &(M[i-1][j+1]), &(M[i-1][j]),&(M[i+1][j-1]), &(M[i][j-1]), &(M[i-1][j-1])};
+             return RGBAverageValue(neighbors,nb_neighbors);
+
+        }
+        PixelDataElement dummypix = {203,192,255};
+        return dummypix;
+
     }
 
     MatrixData R = Pixel256MatrixOP(map,data,data.Dimensions);
