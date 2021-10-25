@@ -1,13 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "bmp_management.h"
-PixelDataElement * BMP_256_createPixel(unsigned char Red, unsigned char Green, unsigned char Blue){
-    PixelDataElement  * R = malloc(sizeof(PixelDataElement));
-    R->Red = Red;
-    R->Green = Green;
-    R->Blue = Blue;
-    return R;
-}
 
 void BMP_256_printMatrix(PixelDataElement * matrix[], int resX, int resY, char * fileName ){
     printf("Calling : %s . . . \n", __func__);

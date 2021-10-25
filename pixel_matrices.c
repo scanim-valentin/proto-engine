@@ -33,6 +33,15 @@ MatrixData Pixel256Matrix(PixelDataElement map(PixelParameters *), int resX, int
 
 }
 
+PixelDataElement RGBSum(PixelDataElement A, PixelDataElement B){
+    PixelDataElement R = {A.Blue+B.Blue , A.Green+B.Green, A.Red+B.Red};
+    return R;
+}
+
+PixelDataElement RGBDivideByScalar(PixelDataElement A, char x){
+    PixelDataElement R = {A.Blue/x , A.Green/x, A.Red/x};
+    return R;
+}
 //Defining some basic operations on RGB matrices
 
 MatrixData Pixel256MatrixTranspose(MatrixData data){
@@ -76,4 +85,34 @@ MatrixData Pixel256MatrixHorizontalMirror(MatrixData data){
     MatrixData R = Pixel256MatrixOP(map,data,data.Dimensions);
     return R;
 
+}
+
+/*
+*à revoir
+*/
+MatrixData Pixel256MatrixBlur(MatrixData data){
+    PixelDataElement map(PixelParameters * param, MatrixData data){
+        int i = param->Coordinates->i;
+        int j = param->Coordinates->j;
+        PixelDataElement R = {0,0,0};
+
+        if(j == data.Dimensions.x-1)
+            R = RGBSum(R,data.Matrix[i][j-1]);
+        else if(j == 0)
+            R = RGBSum(R,data.Matrix[i][j+1]);
+        else
+            R = RGBSum(RGBSum(R,data.Matrix[i][j-1]),data.Matrix[i][j+1]);
+
+        if(i == data.Dimensions.y-1)
+            R = RGBSum(R,data.Matrix[i-1][j]);
+        else if(i == 0)
+            R = RGBSum(R,data.Matrix[i+1][j]);
+        else
+            R = RGBSum(RGBSum(R,data.Matrix[i-1][j]),data.Matrix[i+1][j]);
+
+        return RGBDivideByScalar(R,4);
+    }
+
+    MatrixData R = Pixel256MatrixOP(map,data,data.Dimensions);
+    return R;
 }

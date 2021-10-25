@@ -51,7 +51,7 @@ int main(){
     M = Pixel256Matrix(map_MathAreFun,2000,1000);
 
     BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,"test.bmp");
-    M = Pixel256MatrixVerticalMirror(M);
+    M = Pixel256MatrixBlur(M);
     BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,"test-mirror.bmp");
     return 0;
 }

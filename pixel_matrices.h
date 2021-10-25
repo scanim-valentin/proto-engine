@@ -46,4 +46,8 @@ MatrixData Pixel256MatrixTranspose(MatrixData data);
 MatrixData Pixel256MatrixVerticalMirror(MatrixData data);
 MatrixData Pixel256MatrixHorizontalMirror(MatrixData data);
 
+//Returns the gaussian blured version of a marix
+MatrixData Pixel256MatrixBlur(MatrixData data);
+
+
 #endif
