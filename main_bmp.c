@@ -48,9 +48,10 @@ PixelDataElement map_Mystery2(PixelParameters * param){
 int main(){
     MatrixData M;
 
-    M = Pixel256Matrix(map_Mystery,100,100);
+    M = Pixel256Matrix(map_MathAreFun,2000,1000);
 
     BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,"test.bmp");
-    
+    M = Pixel256MatrixVerticalMirror(M);
+    BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,"test-mirror.bmp");
     return 0;
 }
