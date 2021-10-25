@@ -1,5 +1,6 @@
 #include "bmp_management.h"
 #include "pixel_matrices.h"
+#include "physics.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
