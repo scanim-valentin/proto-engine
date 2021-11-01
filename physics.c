@@ -1,19 +1,14 @@
 #include "physics.h"
 #include "pixel_matrices.h"
 #include <stdio.h>
-#define NB_MAX_SQUARES 10
-#define NB_MAX_RECTANGLES 10
-#define NB_MAX_CIRCLES 10
+#include <stdlib.h>
 
-Square Square_tab[NB_MAX_SQUARES];
-int square_last_index = 0;
+Scene * Physics_initScene(){
 
-Rectangle Rectangle_tab[NB_MAX_RECTANGLES];
-int rectangle_last_index = 0;
+    Scene * S = malloc(sizeof(Scene)) ;
 
-Circle Circle_tab[NB_MAX_CIRCLES];
-int circle_last_index = 0;
 
+}
 
 void Physics_AddSquare(int x,int y,int s){
     Square S = {x,y,s};
@@ -36,6 +31,13 @@ void Physics_AddCircle(int x,int y,int r){
     printf("Added 1 circle (x %d y %d r %d)\n",x,y,r);
 }
 
+void Physics_AddEllipse(int x,int y,int rx, int ry){
+    Ellipse S = {x,y,rx,ry};
+    Ellipse_tab[ellipse_last_index] = S;
+    ellipse_last_index++;
+    printf("Added 1 ellipse (x %d y %d rx %d ry %d)\n",x,y,rx,ry);
+}
+
 MatrixData Physics_snapshot(){
     int resX = 1000 ;
     int resY = 1000 ;
@@ -44,6 +46,7 @@ MatrixData Physics_snapshot(){
         PixelDataElement R = {0,0,0};
         int i = p->Coordinates->i ;
         int j = p->Coordinates->j ;
+
         for(int k = 0 ; k<square_last_index ; k++){
             char is_in_square = (i >= Square_tab[k].y) && (i <= ( Square_tab[k].y + Square_tab[k].s ) ) && (j >= Square_tab[k].x) && (j <= ( Square_tab[k].x + Square_tab[k].s ) );
             if(is_in_square){
@@ -62,13 +65,26 @@ MatrixData Physics_snapshot(){
 
             }
         }
-        for(int k = 0 ; k<square_last_index ; k++){
+        for(int k = 0 ; k<circle_last_index ; k++){
             int y = Circle_tab[k].y;
             int x = Circle_tab[k].x;
             int r_c = Circle_tab[k].r*Circle_tab[k].r;
             char is_in_circle = ( (x-j)*(x-j) + (y-i)*(y-i) <= r_c );
             if(is_in_circle){
                 R.Red = 0 ;
+                R.Green = 0 ;
+                R.Blue = 255 ;
+            }
+        }
+
+        for(int k = 0 ; k<ellipse_last_index ; k++){
+            float y = (float)Ellipse_tab[k].y;
+            float x = (float)Ellipse_tab[k].x;
+            float rx_c = (float)Ellipse_tab[k].rx*(float)Ellipse_tab[k].rx;
+            float ry_c = (float)Ellipse_tab[k].ry*(float)Ellipse_tab[k].ry;
+            char is_in_ellipse = ( (x-j)*(x-j)/rx_c + (y-i)*(y-i)/ry_c <= 1.0 );
+            if(is_in_ellipse){
+                R.Red = 255 ;
                 R.Green = 0 ;
                 R.Blue = 255 ;
             }

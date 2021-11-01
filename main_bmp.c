@@ -1,6 +1,5 @@
 #include "bmp_management.h"
 #include "pixel_matrices.h"
-#include "physics.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -36,7 +35,7 @@ PixelDataElement map_black(PixelParameters * param){
 }
 
 PixelDataElement map_Mystery(PixelParameters * param){
-    PixelDataElement R = {param->Coordinates->i,param->Coordinates->j,param->Coordinates->i+param->Coordinates->j};
+    PixelDataElement R = {param->Coordinates->j,param->Coordinates->i,param->Coordinates->i+param->Coordinates->j};
     return R;
 }
 
@@ -50,13 +49,13 @@ PixelDataElement map_Mystery2(PixelParameters * param){
 int main(){
     MatrixData M;
 
-    M = Pixel256Matrix(map_MathAreFun,2000,1000);
-    char str[80];
-    BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,"it0.bmp");
-    for(int i = 1 ; i < 10 ; i++){
-        M = Pixel256MatrixBlur(M);
-        sprintf(str,"it%d.bmp",i);
-        BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,str);
-    }
+    M = Pixel256Matrix(map_Mystery2,255,255);
+//     char str[80];
+    BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,"mystery.bmp");
+//     for(int i = 1 ; i < 10 ; i++){
+//         M = Pixel256MatrixBlur(M);
+//         sprintf(str,"it%d.bmp",i);
+//         BMP_256_printMatrix(M.Matrix,M.Dimensions.x,M.Dimensions.y,str);
+//     }
     return 0;
 }
